@@ -31,3 +31,13 @@
     margin-bottom: 2rem;
   }
 }
+
+/* === UNIQUENESS IDENTITY LAYER — carpet-cleaning-template === */
+.pageWrapper {
+  /* brand page rhythm */
+}
+.section {
+  padding-top: clamp(6.9rem, 6vw, 8.9rem) !important;
+  padding-bottom: clamp(6.9rem, 6vw, 8.9rem) !important;
+}
+/* end identity layer */

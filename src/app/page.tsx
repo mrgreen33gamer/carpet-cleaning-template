@@ -35,36 +35,42 @@ export default function HomePage() {
       title: "Carpet Cleaning",
       body: "Hot-water extraction and low-moisture options for wall-to-wall carpet. Traffic lanes, family rooms, and pre-treat for tough stains.",
       link: "/services/carpet-cleaning",
+      image: "/pages/home/services/service-1.jpg",
     },
     {
       icon: faCouch,
       title: "Upholstery Cleaning",
       body: "Sofas, sectionals, dining chairs, and fabric furniture cleaned fabric-safe — including pet hair and everyday spills.",
       link: "/services/upholstery-cleaning",
+      image: "/pages/home/services/service-2.jpg",
     },
     {
       icon: faBorderAll,
       title: "Tile & Grout Cleaning",
       body: "Deep clean for tile floors and grout lines in kitchens, baths, and entries — restoring color and removing ground-in soil.",
       link: "/services/tile-grout",
+      image: "/pages/home/services/service-3.jpg",
     },
     {
       icon: faRug,
       title: "Area Rug Cleaning",
       body: "Careful cleaning for wool, synthetic, and specialty rugs — soil suspension, rinse, and proper dry so fibers stay soft.",
       link: "/services/area-rugs",
+      image: "/pages/home/services/service-4.jpg",
     },
     {
       icon: faPaw,
       title: "Pet Odor Treatment",
       body: "Enzyme treatments and targeted extraction for pet urine odor and stains that surface cleaners never fully remove.",
       link: "/services/pet-odor-treatment",
+      image: "/pages/home/services/service-1.jpg",
     },
     {
       icon: faBuilding,
       title: "Commercial Carpet Care",
       body: "Offices, medical suites, and multi-unit common areas on schedules that work around your business hours.",
       link: "/services/commercial-carpet",
+      image: "/pages/home/services/service-2.jpg",
     },
   ];
 
@@ -182,59 +188,49 @@ export default function HomePage() {
     <main className={styles.pageWrapper}>
       <WelcomePage />
       <TrustBar headline="11,000+ cleans completed · 4.9★ from 1,400+ reviews" />
-
       <div className={styles.section}>
         <ServiceCardComponent heading="Carpet, Upholstery & Tile Services" cards={services} />
       </div>
-
+      <CTABanner
+        headline="Carpets That Look — and Smell — New."
+        subline="Hot-water extraction, pet treatment, and upholstery cleaning with flat-rate room packages."
+        primaryText="Call (254) 830-3030"
+        primaryLink="tel:+12548303030"
+        secondaryText="Get Room Quote"
+        secondaryLink="/contact"
+      
+        imageSrc="/pages/home/welcome/hero-main.jpg"
+       />
       <div className={styles.section}>
         <ImpactMetrics metrics={metrics} cityName="Waco" />
       </div>
-
       <div className={styles.section}>
         <WhyChooseUs cityName="Waco" features={whyFeatures} title="Why Central Texas Chooses PureSoft" />
       </div>
-
       <div className={styles.section}>
         <ProcessTimeline steps={processSteps} />
       </div>
-
-      <div className={styles.section}>
-        <WhatToExpect sectionTitle="Every Service Call, Every Time" expectations={expectations} />
-      </div>
-
       <div className={styles.section}>
         <Testimonials testimonials={reviews} />
       </div>
-
       <div className={styles.section}>
         <GuaranteeSection />
       </div>
-
       <div className={styles.section}>
         <LocalServiceAreas cityName="Waco" areas={localAreas} />
       </div>
-
+      <div className={styles.section}>
+        <WhatToExpect sectionTitle="Every Service Call, Every Time" expectations={expectations} />
+      </div>
       <div className={styles.section}>
         <FAQ cityName="Waco" faq={faq} title="Carpet Cleaning FAQs" />
       </div>
-
       <div className={styles.section}>
         <BlogPreviewGrid />
       </div>
-
       <div className={styles.section}>
         <Variant4 title="Request a Free Quote" cityName="Waco" slug="/" spot="home-form" formVariant={2} />
       </div>
-
-      <CTABanner
-        headline="Ready for Softer, Cleaner Floors?"
-        subline="Same-day appointments available. Flat-rate pricing. Spot-Free Satisfaction Guarantee."
-        primaryText="Call (254) 830-3030"
-        primaryLink="tel:+12548303030"
-        secondaryText="Book Online"
-        secondaryLink="/contact"
-      />
     </main>
   );
 }

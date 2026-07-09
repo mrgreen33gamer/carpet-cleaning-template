@@ -19,7 +19,7 @@ const ALL_POSTS: BlogPost[] = [
     category: 'Care Tips',
     date:     'July 3, 2026',
     readTime: 7,
-    imageSrc: '/pages/blogs/hvac-filter.jpg',
+    imageSrc: '/pages/home/services/service-2.jpg',
     imageAlt: 'How often to clean carpet in Central Texas homes',
     featured: true,
   },
@@ -30,7 +30,7 @@ const ALL_POSTS: BlogPost[] = [
     category: 'Stains & Odors',
     date:     'June 24, 2026',
     readTime: 6,
-    imageSrc: '/pages/blogs/energy-savings.jpg',
+    imageSrc: '/pages/home/welcome/after.jpg',
     imageAlt: 'Pet stain removal guide for carpet and upholstery',
   },
   {
@@ -40,7 +40,7 @@ const ALL_POSTS: BlogPost[] = [
     category: 'Methods',
     date:     'June 15, 2026',
     readTime: 8,
-    imageSrc: '/pages/blogs/ac-replacement.jpg',
+    imageSrc: '/pages/home/welcome/hero-main.jpg',
     imageAlt: 'Steam vs dry carpet cleaning comparison for Waco TX',
   },
 ];

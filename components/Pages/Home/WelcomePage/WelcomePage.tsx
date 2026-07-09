@@ -1,134 +1,290 @@
+// _archetype-library/hero-b-before-after/Component.tsx
+//
+// Hero B: Before / After — left copy, right full drag-to-reveal image comparison.
+// Interactive range slider + pointer drag. Accessible via role="slider" + range input.
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { PhoneIcon, ChevronIcon, CheckIcon } from './_shared/icons';
 import styles from './styles.module.scss';
 
-// ── Particle canvas ───────────────────────────────────────────────────────────
-function ParticleCanvas() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = ref.current; if (!canvas) return;
-    const ctx = canvas.getContext('2d'); if (!ctx) return;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize(); window.addEventListener('resize', resize);
-    const pts = Array.from({ length: 38 }, () => ({
-      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-      r: Math.random() * 5 + 0.5, vx: (Math.random() - 0.5) * 3,
-      vy: Math.random() * 0.25 + 0.06, o: Math.random() * 0.35 + 0.7,
-      flake: Math.random() > 0.3,
-    }));
-    let raf: number;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pts.forEach(p => {
-        ctx.save(); ctx.globalAlpha = p.o;
-        if (p.flake) {
-          ctx.strokeStyle = '#db2777'; ctx.lineWidth = 0.6;
-          ctx.translate(p.x, p.y);
-          for (let i = 0; i < 6; i++) { ctx.rotate(Math.PI / 3); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, p.r * 3.2); ctx.stroke(); }
-        } else { ctx.fillStyle = '#db2777'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
-        ctx.restore();
-        p.x += p.vx; p.y += p.vy;
-        if (p.y > canvas.height + 10) { p.y = -10; p.x = Math.random() * canvas.width; }
-        if (p.x < -10) p.x = canvas.width + 10;
-        if (p.x > canvas.width + 10) p.x = -10;
-      });
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-  }, []);
-  return <canvas ref={ref} className={styles.particleCanvas} aria-hidden="true" />;
-}
+function BeforeAfterSlider({
+  beforeImageSrc,
+  afterImageSrc,
+  beforeLabel = 'Before',
+  afterLabel = 'After',
+}: {
+  beforeImageSrc: string;
+  afterImageSrc: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+}) {
+  const [position, setPosition] = useState(50);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
 
-// ── Decorative meter ──────────────────────────────────────────────────────────
-function TempMeter() {
-  const [fill, setFill] = useState(0);
-  useEffect(() => { const t = setTimeout(() => setFill(88), 750); return () => clearTimeout(t); }, []);
+  const setFromClientX = useCallback((clientX: number) => {
+    const el = frameRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setPosition(Math.min(100, Math.max(0, pct)));
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragging.current = true;
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    setFromClientX(e.clientX);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    setFromClientX(e.clientX);
+  };
+
+  const onPointerUp = () => {
+    dragging.current = false;
+  };
+
+  const onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPosition(Number(e.target.value));
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.shiftKey ? 10 : 2;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      setPosition((p) => Math.max(0, p - step));
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      setPosition((p) => Math.min(100, p + step));
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      setPosition(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setPosition(100);
+    }
+  };
+
   return (
-    <div className={styles.thermo} aria-hidden="true">
-      <div className={styles.thermoColumn}>
-        <div className={styles.thermoTube}>
-          <motion.div
-            className={styles.thermoFill}
-            initial={{ height: '0%' }}
-            animate={{ height: `${fill}%` }}
-            transition={{ duration: 2.0, delay: 0.85, ease: [0.34, 1.2, 0.64, 1] }}
-          />
+    <div className={styles.baFrame} ref={frameRef}>
+      <img
+        src={afterImageSrc}
+        alt={afterLabel}
+        className={styles.baImage}
+        draggable={false}
+      />
+      <div
+        className={styles.baBeforeClip}
+        style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+      >
+        <img
+          src={beforeImageSrc}
+          alt={beforeLabel}
+          className={styles.baImage}
+          draggable={false}
+        />
+      </div>
+
+      <span className={`${styles.baLabel} ${styles.baLabelBefore}`}>{beforeLabel}</span>
+      <span className={`${styles.baLabel} ${styles.baLabelAfter}`}>{afterLabel}</span>
+
+      <div
+        className={styles.baDivider}
+        style={{ left: `${position}%` }}
+        aria-hidden="true"
+      >
+        <div className={styles.baHandle}>
+          <span className={styles.baHandleArrow} data-dir="left" />
+          <span className={styles.baHandleArrow} data-dir="right" />
         </div>
-        <div className={styles.thermoBulb} />
       </div>
-      <div className={styles.thermoLabels}>
-        <span className={styles.thermoTop}>Fresh</span>
-        <span className={styles.thermoMid}>Waco, TX</span>
-        <span className={styles.thermoBot}>Clean</span>
-      </div>
+
+      {/* Accessible control — full-area range for pointer + keyboard */}
+      <input
+        type="range"
+        className={styles.baRange}
+        min={0}
+        max={100}
+        step={0.5}
+        value={position}
+        onChange={onRangeChange}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onKeyDown={onKeyDown}
+        aria-label="Before and after reveal"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(position)}
+        aria-valuetext={`${Math.round(position)} percent before image`}
+        role="slider"
+      />
     </div>
   );
 }
 
-const CHIPS = ['Same-Day Service', 'No Contracts', 'IICRC-Certified', '15+ Yrs Local', 'Spot-Free Guarantee'];
-
 export default function WelcomePage() {
+const badgeText = 'Waco\'s Most Trusted Carpet Care — Since 2011';
+const headlineLines = [
+  'Soft Carpets.',
+  'Fresh Rooms.',
+];
+const headlineAccent = 'PureSoft Carpet Care.';
+const subheadline = 'Deep Carpet · Upholstery · Tile Cleaning. Flat-rate pricing. Same-day service. Spot-Free Satisfaction Guarantee. Serving Waco and Central Texas with IICRC-certified technicians.';
+const primaryCta = { label: 'Call (254) 830-3030', href: 'tel:+12548303030' };
+const secondaryCta = { label: 'Free Estimate', href: '/contact' };
+const chips = [
+  'Same-Day Service',
+  'No Contracts',
+  'IICRC-Certified',
+  '15+ Yrs Local',
+  'Spot-Free Guarantee',
+];
+const stats = [
+  {
+    "value": "500+",
+    "label": "Jobs Done"
+  },
+  {
+    "value": "4.9 ★",
+    "label": "Rating"
+  },
+  {
+    "value": "15+",
+    "label": "Years Local"
+  },
+  {
+    "value": "1-Yr",
+    "label": "Warranty"
+  }
+];
+const meterTarget = 72;
+const meterTopLabel = "After";
+const meterMidLabel = "During";
+const meterBotLabel = "Before";
+const particleColor = '#14b8a6';
+const beforeImageSrc = '/pages/home/welcome/before.jpg';
+const afterImageSrc = '/pages/home/welcome/after.jpg';
+const beforeLabel = "Stained & dull";
+const afterLabel = "Fresh & bright";
+const mapCenterLabel = 'Service HQ';
+const mapPins = [
+  { label: 'Waco', x: 42, y: 48 },
+  { label: 'Temple', x: 68, y: 62 },
+  { label: 'Killeen', x: 58, y: 72 },
+];
+const coverageLabel = 'Central Texas coverage';
+const materials = [
+  { name: "Rooms", swatch: "#0ea5e9", imageSrc: "/pages/home/welcome/mat-1.jpg" },
+  { name: "Stairs", swatch: "#38bdf8", imageSrc: "/pages/home/welcome/mat-2.jpg" },
+  { name: "Upholstery", swatch: "#0284c7", imageSrc: "/pages/home/welcome/mat-3.jpg" },
+  { name: "Pet Odor", swatch: "#7dd3fc", imageSrc: "/pages/home/welcome/mat-1.jpg" },
+  { name: "Area Rugs", swatch: "#0369a1", imageSrc: "/pages/home/welcome/mat-2.jpg" },
+  { name: "Office", swatch: "#0c4a6e", imageSrc: "/pages/home/welcome/mat-3.jpg" }
+];
+const quote = "Puppy accidents were everywhere. After PureSoft you cannot tell — and the smell is gone.";
+const authorName = "Jess L.";
+const authorMeta = "Pet treatment · Killeen";
+const rating = 5;
+const schematicLabel = "PureSoft schematic";
+const gauges = [
+  { label: "Homes", value: "5,400+" },
+  { label: "Rating", value: "4.9 ★" },
+  { label: "Dry time", value: "~4–6 hrs" },
+  { label: "Pet safe", value: "Yes" }
+];
+const toggles = [
+  { label: "Before/after", on: true },
+  { label: "Weekend slots", on: true },
+  { label: "Photo proofs", on: true }
+];
+const textureSrc = '/pages/home/welcome/hero-main.jpg';
+const textureAlt = 'Texture';
+const accentWord = "PureSoft";
+
   return (
     <section className={styles.hero} aria-label="Hero">
-      <ParticleCanvas />
       <div className={styles.shard} aria-hidden="true" />
 
       <div className={styles.layout}>
-
         <div className={styles.content}>
-          <motion.div className={styles.badge}
-            initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}>
+          <motion.div
+            className={styles.badge}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <span className={styles.badgeDot} />
-            Waco&apos;s Most Trusted Carpet Care — Since 2011
+            {badgeText}
           </motion.div>
 
-          <motion.h1 className={styles.headline}
-            initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}>
-            Soft Carpets.<br />Fresh Rooms.<br />
-            <span className={styles.accentLine}>PureSoft Carpet Care.</span>
+          <motion.h1
+            className={styles.headline}
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            {headlineLines.map((line, i) => (
+              <React.Fragment key={i}>{line}<br /></React.Fragment>
+            ))}
+            <span className={styles.accentLine}>{headlineAccent}</span>
           </motion.h1>
 
-          <motion.p className={styles.sub}
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.22 }}>
-            Deep Carpet · Upholstery · Tile Cleaning. Flat-rate pricing. Same-day service.
-            Spot-Free Satisfaction Guarantee. Serving Waco and Central Texas with IICRC-certified technicians.
+          <motion.p
+            className={styles.sub}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.22 }}
+          >
+            {subheadline}
           </motion.p>
 
-          <motion.div className={styles.ctaRow}
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.34 }}>
-            <a href="tel:+12548303030" className={styles.ctaPrimary}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.17 12a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-              Call (254) 830-3030
+          <motion.div
+            className={styles.ctaRow}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.34 }}
+          >
+            <a href={primaryCta.href} className={styles.ctaPrimary}>
+              <PhoneIcon size={15} /> {primaryCta.label}
             </a>
-            <Link href="/contact" className={styles.ctaSecondary}>
-              Free Quote
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <polyline points="9 18 15 12 9 6"/>
-              </svg>
+            <Link href={secondaryCta.href} className={styles.ctaSecondary}>
+              {secondaryCta.label} <ChevronIcon size={12} />
             </Link>
           </motion.div>
 
-          <motion.div className={styles.chips}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.45 }}>
-            {CHIPS.map((c) => (
-              <span key={c} className={styles.chip}>{c}</span>
+          <motion.div
+            className={styles.chips}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.48 }}
+          >
+            {chips.map((c) => (
+              <span key={c} className={styles.chip}>
+                <CheckIcon size={9} /> {c}
+              </span>
             ))}
           </motion.div>
         </div>
 
-        <div className={styles.visual} aria-hidden="true">
-          <TempMeter />
-        </div>
+        <motion.div
+          className={styles.visual}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.28, ease: 'easeOut' }}
+        >
+          <BeforeAfterSlider
+            beforeImageSrc={beforeImageSrc}
+            afterImageSrc={afterImageSrc}
+            beforeLabel={beforeLabel}
+            afterLabel={afterLabel}
+          />
+        </motion.div>
       </div>
     </section>
   );
