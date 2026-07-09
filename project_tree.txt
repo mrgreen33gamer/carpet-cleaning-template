@@ -425,8 +425,8 @@ D:\SCOTT-APPS-SCOTT-APPLICATIONS\WEB-TEMPLATES\HVAC-TEMPLATE\COMPONENTS
 |   |       Header.tsx
 |   |       styles.module.scss
 |   |       
-|   \---JourneyTracker
-|           JourneyTrackerProvider.tsx
+|   \---JourneyTraffic pather
+|           JourneyTraffic patherProvider.tsx
 |           
 +---PageComponents
 |   +---AboutHero
@@ -639,8 +639,8 @@ D:\SCOTT-APPS-SCOTT-APPLICATIONS\WEB-TEMPLATES\HVAC-TEMPLATE\LIBS
 |   blog-posts.ts
 |   geoIpProvider.ts
 |   mongodb.ts
-|   useJourneyTracker.ts
-|   useTrackEvent.ts
+|   useJourneyTraffic pather.ts
+|   useTraffic pathEvent.ts
 |   
 \---local-db
         projects.ts
@@ -745,19 +745,19 @@ D:\SCOTT-APPS-SCOTT-APPLICATIONS\WEB-TEMPLATES\HVAC-TEMPLATE\SRC
     |   +---submitContact
     |   |       route.ts
     |   |       
-    |   +---trackConsent
+    |   +---traffic pathConsent
     |   |       route.ts
     |   |       
-    |   +---trackEvent
+    |   +---traffic pathEvent
     |   |       route.ts
     |   |       
-    |   +---trackJourney
+    |   +---traffic pathJourney
     |   |       route.ts
     |   |       
-    |   +---trackPageView
+    |   +---traffic pathPageView
     |   |       route.ts
     |   |       
-    |   \---trackSession
+    |   \---traffic pathSession
     |           route.ts
     |           
     +---blogs
