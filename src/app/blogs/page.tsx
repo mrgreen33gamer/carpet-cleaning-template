@@ -5,10 +5,6 @@ import { getAllPosts, getAllCategories } from '../../../libs/blog-posts';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-// ✅ v9 SEO FIX: Added soft CTA strip at bottom of blog index
-//                Blog index had 0 CTAs — readers landed, browsed, and left with no prompt.
-//                A soft strip (not a hard quote CTA) is appropriate for discovery-mode readers.
-
 export default function BlogPage() {
   const allPosts = getAllPosts();
   const categories = ['All', ...getAllCategories()];
@@ -17,8 +13,6 @@ export default function BlogPage() {
 
   return (
     <main className={styles.page}>
-
-      {/* Page Header */}
       <section className={styles.pageHeader}>
         <motion.div
           className={styles.pageHeaderInner}
@@ -27,14 +21,13 @@ export default function BlogPage() {
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
           <span className={styles.eyebrow}>Insights &amp; Resources</span>
-          <h1 className={styles.pageTitle}>Arctic Air HVAC - Blog Center</h1>
+          <h1 className={styles.pageTitle}>PureSoft Carpet Care — Blog Center</h1>
           <p className={styles.pageSubtitle}>
-            Real talk and useful tips for Central Texas business owners — web design, software, marketing, and more.
+            Practical carpet cleaning tips, pet stain & odor advice, and method guides for Central Texas homeowners.
           </p>
         </motion.div>
       </section>
 
-      {/* Category filter strip */}
       <section className={styles.filterBar}>
         <div className={styles.filterInner}>
           {categories.map((cat, i) => (
@@ -45,7 +38,6 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Featured Post */}
       {featured && (
         <section className={styles.featuredSection}>
           <div className={styles.container}>
@@ -55,10 +47,8 @@ export default function BlogPage() {
         </section>
       )}
 
-      {/* Divider */}
       {rest.length > 0 && <div className={styles.divider} />}
 
-      {/* Post Grid */}
       {rest.length > 0 && (
         <section className={styles.gridSection}>
           <div className={styles.container}>
@@ -72,10 +62,6 @@ export default function BlogPage() {
         </section>
       )}
 
-      {/* ── Soft CTA strip ─────────────────────────────────────────────────────
-           Intentionally low-pressure — blog readers are in discovery mode.
-           One clear invite is enough; no form, no countdown, no hard sell.
-      ──────────────────────────────────────────────────────────────────────── */}
       <section className={styles.blogCTAStrip}>
         <div className={styles.container}>
           <motion.div
@@ -86,18 +72,17 @@ export default function BlogPage() {
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
             <p className={styles.blogCTAHeading}>
-              Need reliable HVAC service in Central Texas?
+              Need professional carpet cleaning in Central Texas?
             </p>
             <p className={styles.blogCTABody}>
-              We've been keeping Waco-area homes and businesses comfortable with expert heating, cooling, and maintenance since 2015. Free estimate, no obligations.
+              We&apos;ve been serving Waco-area homes and businesses with expert carpet, upholstery, and tile cleaning since 2011. Free quote, no obligations.
             </p>
             <Link href="/contact" className={styles.blogCTABtn}>
-              Get Your Free Estimate Today
+              Get Your Free Quote Today
             </Link>
           </motion.div>
         </div>
       </section>
-
     </main>
   );
 }
