@@ -21,43 +21,43 @@ interface TechStackProps {
 
 const DEFAULT_GROUPS: BrandGroup[] = [
   {
-    label: 'Equipment Brands We Service',
+    label: 'Methods & Specialties',
     items: [
-      { name: 'Carrier',     type: 'brand', icon: '❄️' },
-      { name: 'Trane',       type: 'brand', icon: '❄️' },
-      { name: 'Lennox',      type: 'brand', icon: '❄️' },
-      { name: 'Rheem',       type: 'brand', icon: '❄️' },
-      { name: 'Goodman',     type: 'brand', icon: '❄️' },
-      { name: 'York',        type: 'brand', icon: '❄️' },
-      { name: 'Daikin',      type: 'brand', icon: '❄️' },
-      { name: 'American Standard', type: 'brand', icon: '❄️' },
+      { name: 'Hot-Water Extraction', type: 'brand', icon: '💧' },
+      { name: 'Low-Moisture Cleaning', type: 'brand', icon: '🌬️' },
+      { name: 'Upholstery Care', type: 'brand', icon: '🛋️' },
+      { name: 'Tile & Grout', type: 'brand', icon: '🧱' },
+      { name: 'Area Rugs', type: 'brand', icon: '🧺' },
+      { name: 'Pet Odor Treatment', type: 'brand', icon: '🐾' },
+      { name: 'Commercial Carpet', type: 'brand', icon: '🏢' },
+      { name: 'Fiber Protection', type: 'brand', icon: '🛡️' },
     ],
   },
   {
     label: 'Certifications & Licenses',
     items: [
-      { name: 'NATE Certified',      type: 'cert', icon: '✓' },
-      { name: 'TDLR Licensed',       type: 'cert', icon: '✓' },
-      { name: 'EPA 608 Certified',   type: 'cert', icon: '✓' },
-      { name: 'Fully Insured',       type: 'cert', icon: '✓' },
+      { name: 'IICRC-Certified',        type: 'cert', icon: '✓' },
+      { name: 'Bonded & Insured', type: 'cert', icon: '✓' },
+      { name: 'Spot-Free Guarantee', type: 'cert', icon: '✓' },
+      { name: 'Locally Owned Since 2011', type: 'cert', icon: '✓' },
     ],
   },
   {
-    label: 'System Types',
+    label: 'Service Types',
     items: [
-      { name: 'Central AC',          type: 'tool', icon: '🌡️' },
-      { name: 'Heat Pumps',          type: 'tool', icon: '🌡️' },
-      { name: 'Mini-Splits',         type: 'tool', icon: '🌡️' },
-      { name: 'Gas Furnaces',        type: 'tool', icon: '🌡️' },
-      { name: 'Duct Systems',        type: 'tool', icon: '🌡️' },
-      { name: 'Air Handlers',        type: 'tool', icon: '🌡️' },
+      { name: 'Residential Deep Clean', type: 'tool', icon: '🏠' },
+      { name: 'Move-In / Move-Out', type: 'tool', icon: '📦' },
+      { name: 'Make-Ready Units', type: 'tool', icon: '🔑' },
+      { name: 'EV Chargers',          type: 'tool', icon: '🔌' },
+      { name: 'Generators',           type: 'tool', icon: '🔌' },
+      { name: 'Troubleshooting',      type: 'tool', icon: '🔌' },
     ],
   },
 ];
 
 const TechStack: React.FC<TechStackProps> = ({
-  title    = 'All Brands, All Systems',
-  subtitle = 'We service every major brand and system type — no brand-specific limitations, no excuses.',
+  title    = 'Licensed Work, Quality Equipment',
+  subtitle = 'We install and service major electrical brands — IICRC-certified crews, no shortcuts on code or materials.',
   groups   = DEFAULT_GROUPS,
 }) => {
   return (

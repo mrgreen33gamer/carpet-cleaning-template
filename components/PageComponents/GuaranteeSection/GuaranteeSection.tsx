@@ -37,9 +37,9 @@ const DEFAULT_GUARANTEES: Guarantee[] = [
   },
   {
     icon: faShieldHalved,
-    title: "1-Year Parts & Labor Warranty",
+    title: "Spot-Free Satisfaction Guarantee",
     description:
-      "Every repair we perform is covered for a full year — parts and labor. If it fails within 12 months, we fix it at no charge.",
+      "If a treated spot does not meet the standard we discussed, we return to re-treat at no charge. We stand behind every clean.",
   },
   {
     icon: faRotateLeft,
@@ -49,15 +49,15 @@ const DEFAULT_GUARANTEES: Guarantee[] = [
   },
   {
     icon: faCertificate,
-    title: "NATE-Certified Technicians",
+    title: "IICRC-Certified Technicians",
     description:
-      "Every tech who enters your home is NATE-certified and TDLR-licensed. No apprentices working alone — ever.",
+      "Every technician who enters your home is IICRC-certified, bonded, and insured. Professional methods on every job.",
   },
   {
     icon: faCalendarCheck,
     title: "No Contracts. No Lock-In.",
     description:
-      "Our maintenance plans are month-to-month. We earn your business with every visit — not by holding you hostage with a contract.",
+      "We earn your business with every visit — not by holding you hostage with a multi-year service contract.",
   },
   {
     icon: faStar,
@@ -92,7 +92,7 @@ const GuaranteeSection: React.FC<GuaranteeSectionProps> = ({
             ))}
           </h2>
           <p className={styles.body}>
-            Every HVAC company in Central Texas makes promises. We back ours in writing — with flat-rate pricing, certified technicians, and a 1-year warranty on every repair we touch.
+            Every carpet cleaning company in Central Texas makes promises. We back ours in writing — with flat-rate pricing, IICRC-certified technicians, and a Spot-Free Satisfaction Guarantee on every clean.
           </p>
           <Link
             href={ctaLink}
@@ -117,7 +117,7 @@ const GuaranteeSection: React.FC<GuaranteeSectionProps> = ({
                 </svg>
               ))}
             </div>
-            <span className={styles.ratingText}>4.9 · 300+ verified Google reviews</span>
+            <span className={styles.ratingText}>4.9 · 1,400+ verified Google reviews</span>
           </div>
         </div>
 

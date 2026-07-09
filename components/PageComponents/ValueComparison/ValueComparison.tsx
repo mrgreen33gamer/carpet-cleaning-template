@@ -46,7 +46,7 @@ function StatusIcon({ value }: { value: boolean | string }) {
   return <span className={styles.iconMaybe}>{value}</span>;
 }
 
-export default function ValueComparison({ rows = DEFAULT_ROWS, title = 'Arctic Air vs. The Other Guys' }: ValueComparisonProps) {
+export default function ValueComparison({ rows = DEFAULT_ROWS, title = 'PureSoft vs. The Other Guys' }: ValueComparisonProps) {
   return (
     <section className={styles.section} aria-label="Value comparison">
       <div className={styles.container}>
@@ -75,7 +75,7 @@ export default function ValueComparison({ rows = DEFAULT_ROWS, title = 'Arctic A
                 <polyline points="18 8 22 12 18 16"/>
               </svg>
             </span>
-            Arctic Air
+            PureSoft Carpet Care
           </div>
           <div className={styles.colHeaderOthers}>Competitors</div>
         </div>
@@ -105,7 +105,7 @@ export default function ValueComparison({ rows = DEFAULT_ROWS, title = 'Arctic A
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <span className={styles.stripText}>8 for 8. No fine print.</span>
-          <a href="/contact" className={styles.stripCta}>Get Your Free Estimate →</a>
+          <a href="/contact" className={styles.stripCta}>Get Your Free Quote →</a>
         </motion.div>
 
       </div>

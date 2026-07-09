@@ -22,16 +22,16 @@ const AboutHero: React.FC<AboutHeroProps> = ({ cityName }) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
         >
-          <span className={styles.eyebrow}>Since 2010 · {cityName}, TX</span>
+          <span className={styles.eyebrow}>Since 2011 · {cityName}, TX</span>
           <h1 className={styles.heroTitle}>
-            Central Texas HVAC<br />
+            Central Texas carpet care<br />
             <em>Done Right.</em><br />
             Every Time.
           </h1>
           <p className={styles.heroSubtitle}>
-            Arctic Air HVAC has been keeping homes and businesses comfortable in{' '}
+            PureSoft Carpet Care has been keeping homes and businesses fresh in{' '}
             <strong>{cityName}</strong> and across Central Texas for over 15 years —
-            with licensed technicians, flat-rate pricing, and a warranty on every single job.
+            with IICRC-certified technicians, flat-rate pricing, and a Spot-Free Satisfaction Guarantee on every job.
           </p>
 
           <div className={styles.statRow}>
@@ -46,8 +46,8 @@ const AboutHero: React.FC<AboutHeroProps> = ({ cityName }) => {
             </div>
             <div className={styles.statDivider} aria-hidden="true" />
             <div className={styles.stat}>
-              <span className={styles.statNumber}>2,400+</span>
-              <span className={styles.statLabel}>Systems Serviced</span>
+              <span className={styles.statNumber}>11,000+</span>
+              <span className={styles.statLabel}>Cleans Completed</span>
             </div>
           </div>
 
@@ -56,13 +56,13 @@ const AboutHero: React.FC<AboutHeroProps> = ({ cityName }) => {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
-              TDLR Licensed
+              IICRC-Certified
             </span>
             <span className={styles.badge}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              NATE Certified
+              IICRC-Certified
             </span>
             <span className={styles.badge}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -83,8 +83,8 @@ const AboutHero: React.FC<AboutHeroProps> = ({ cityName }) => {
           <div className={styles.imageFrame}>
             <div className={styles.imageWrapper}>
               <Image
-                src="/pages/about/about-hero.jpg"
-                alt="Arctic Air HVAC — Waco, Texas HVAC technicians"
+                src="/pages/seo-template-resources/about-hero.png"
+                alt="PureSoft Carpet Care — Waco, Texas carpet cleaning technicians"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 style={{ objectFit: 'cover' }}
@@ -103,8 +103,8 @@ const AboutHero: React.FC<AboutHeroProps> = ({ cityName }) => {
                 <polyline points="18 8 22 12 18 16"/>
               </svg>
               <div className={styles.trustCardText}>
-                <span className={styles.trustCardTitle}>Arctic Air HVAC</span>
-                <span className={styles.trustCardSub}>Waco's Most Trusted HVAC</span>
+                <span className={styles.trustCardTitle}>PureSoft Carpet Care</span>
+                <span className={styles.trustCardSub}>Waco's Most Trusted Carpet Care</span>
               </div>
             </div>
           </div>
