@@ -34,7 +34,7 @@ const marqueeItems = [
   'Serving Central Texas Since 2011',
   'IICRC-Certified · Bonded & Insured',
 ];
-const footerLine = 'Licensed &amp; Insured · Waco, TX';
+const footerLine = 'Licensed & Insured · Waco, TX';
 const secondaryCtaLabel = 'Book Now';
 const secondaryCtaHref = '/contact';
 const hoursText = 'Mon–Sat · 7am–7pm';
