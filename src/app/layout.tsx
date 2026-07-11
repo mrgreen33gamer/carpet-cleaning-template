@@ -118,7 +118,7 @@ export const metadata: Metadata = {
     siteName: "PureSoft Carpet Care",
     images: [
       {
-        url: `${BASE_URL}/logos/scott-apps-banner.png?v=1`,
+        url: `${BASE_URL}/pages/home/welcome/hero-main.jpg`,
         width: 1200,
         height: 630,
         alt: "PureSoft Carpet Care — Waco TX Carpet & Upholstery Cleaning",
@@ -132,7 +132,7 @@ export const metadata: Metadata = {
     title: "PureSoft Carpet Care | Waco TX Carpet Cleaning",
     description:
       "Deep carpet, upholstery, tile & grout, area rugs & pet odor treatment for Central Texas. IICRC-certified & insured — Spot-Free Satisfaction Guarantee.",
-    images: [`${BASE_URL}/logos/scott-apps-banner.png?v=1`],
+    images: [`${BASE_URL}/pages/home/welcome/hero-main.jpg`],
   },
   robots: {
     index: true,

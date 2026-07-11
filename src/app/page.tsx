@@ -63,14 +63,14 @@ export default function HomePage() {
       title: "Pet Odor Treatment",
       body: "Enzyme treatments and targeted extraction for pet urine odor and stains that surface cleaners never fully remove.",
       link: "/services/pet-odor-treatment",
-      image: "/pages/home/services/service-1.jpg",
+      image: "/pages/home/welcome/before.jpg",
     },
     {
       icon: faBuilding,
       title: "Commercial Carpet Care",
       body: "Offices, medical suites, and multi-unit common areas on schedules that work around your business hours.",
       link: "/services/commercial-carpet",
-      image: "/pages/home/services/service-2.jpg",
+      image: "/pages/home/welcome/after.jpg",
     },
   ];
 
