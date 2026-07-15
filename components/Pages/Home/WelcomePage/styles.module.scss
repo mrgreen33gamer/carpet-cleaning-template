@@ -1,5 +1,6 @@
-// Hero B — Before / After drag-to-reveal
-// @use path assumes adaptation into components/Pages/Home/WelcomePage/
+// PureSoft Carpet Care Hero — teal/obsidian identity.
+// Photographic parallax stage (bgLayer + scrim) with an authentic IICRC-crew
+// photo card on the right. Replaces the earlier before/after drag-to-reveal.
 @use '../../../../src/app/globalVariables.scss' as *;
 
 .hero {
@@ -19,16 +20,45 @@
   }
 }
 
+// ── Photographic parallax background ──────────────────────────────────────────
+.bgLayer {
+  position: absolute;
+  top: -8%;
+  left: 0;
+  width: 100%;
+  height: 116%;
+  z-index: 0;
+  will-change: transform;
+}
+
+.bgImage {
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+// Teal brand scrim — keeps the photo on-brand and the headline legible.
+// Darker on the left (text column), lighter on the right (photo card).
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 84% 14%, rgba($orange, 0.2) 0%, rgba($orange, 0) 55%),
+    linear-gradient(100deg, rgba($obsidian, 0.96) 0%, rgba($obsidian, 0.86) 40%, rgba($obsidian, 0.55) 74%, rgba($obsidian, 0.4) 100%),
+    linear-gradient(180deg, rgba($obsidian, 0.3) 0%, rgba($obsidian, 0) 30%, rgba($obsidian, 0.5) 100%);
+}
+
 .shard {
   position: absolute; top: 0; right: 0;
   width: 48%; height: 100%;
   background: linear-gradient(135deg, transparent 0%, rgba($orange, 0.025) 40%, rgba($orange, 0.055) 100%);
   clip-path: polygon(26% 0%, 100% 0%, 100% 100%, 0% 100%);
-  pointer-events: none; z-index: 1;
+  pointer-events: none; z-index: 3;
 }
 
 .layout {
-  position: relative; z-index: 2;
+  position: relative; z-index: 5;
   max-width: 1380px; margin: 0 auto;
   padding: clamp(6rem, 11vh, 9rem) clamp(1.5rem, 5vw, 5rem) clamp(5rem, 9vh, 7rem);
   display: grid;
@@ -127,160 +157,102 @@
   position: relative;
   width: 100%;
   min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-// ── Before / After comparison ──────────────────────────────────────────────
-
-.baFrame {
+// ── Authentic technician photo card (replaces the before/after slider) ────────
+.photoCard {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  max-height: min(62vh, 520px);
-  border-radius: 16px;
+  max-width: 460px;
+  aspect-ratio: 4 / 5;
+  border-radius: $radius-lg;
   overflow: hidden;
-  border: 1px solid rgba($white, 0.1);
-  background: rgba($white, 0.03);
+  border: 1px solid rgba($lightorange, 0.3);
   box-shadow:
+    0 1px 0 rgba($white, 0.12) inset,
     0 24px 64px rgba(0, 0, 0, 0.45),
     0 0 0 1px rgba($orange, 0.06);
-  user-select: none;
-  touch-action: none;
 
   @media (max-width: 960px) {
-    max-height: 420px;
+    max-width: 360px;
+    aspect-ratio: 4 / 3;
     margin: 0 auto;
   }
 }
 
-.baImage {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.photo {
   object-fit: cover;
-  display: block;
-  pointer-events: none;
+  object-position: center;
 }
 
-.baBeforeClip {
+// Teal-to-shadow glaze so the overlays stay readable on any photo
+.photoGlaze {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  will-change: clip-path;
-
-  .baImage {
-    // Keep before image full-size under clip so edges stay aligned
-    width: 100%;
-    height: 100%;
-  }
+  background:
+    linear-gradient(180deg, rgba($obsidian, 0) 42%, rgba($obsidian, 0.78) 100%),
+    linear-gradient(300deg, rgba($orange, 0.18) 0%, rgba($orange, 0) 46%);
 }
 
-.baLabel {
+.photoBadge {
   position: absolute;
-  top: 0.85rem;
-  z-index: 3;
-  font-family: $textFont;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.32rem 0.7rem;
-  border-radius: 6px;
-  pointer-events: none;
-  backdrop-filter: blur(8px);
-}
-
-.baLabelBefore {
-  left: 0.85rem;
-  color: rgba($white, 0.9);
-  background: rgba($obsidian, 0.72);
-  border: 1px solid rgba($white, 0.12);
-}
-
-.baLabelAfter {
-  right: 0.85rem;
-  color: $obsidian;
-  background: rgba($orange, 0.92);
-  border: 1px solid rgba($orange, 0.4);
-}
-
-.baDivider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  transform: translateX(-50%);
-  background: $white;
-  box-shadow: 0 0 18px rgba($orange, 0.45);
-  z-index: 4;
-  pointer-events: none;
-}
-
-.baHandle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: $white;
-  border: 3px solid $orange;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 0 4px rgba($orange, 0.18);
-  display: flex;
+  top: 0.9rem;
+  left: 0.9rem;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
+  gap: 0.5rem;
+  font-family: $textFont;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $white;
+  background: rgba($obsidian, 0.68);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba($lightorange, 0.32);
+  border-radius: $radius-pill;
+  padding: 0.4rem 0.85rem;
 }
 
-.baHandleArrow {
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-
-  &[data-dir='left'] {
-    border-right: 7px solid $obsidian;
-  }
-  &[data-dir='right'] {
-    border-left: 7px solid $obsidian;
-  }
+.photoBadgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $lightorange;
+  box-shadow: 0 0 8px 1px rgba($lightorange, 0.8);
+  flex-shrink: 0;
 }
 
-// Invisible full-area range — keyboard + pointer accessible
-.baRange {
+.specCard {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: ew-resize;
-  z-index: 5;
-  appearance: none;
-  -webkit-appearance: none;
-  background: transparent;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.85rem 1rem;
+  border-radius: $radius-md;
+  background: rgba($obsidian, 0.62);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba($lightorange, 0.24);
+}
 
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 44px;
-    height: 100%;
-    cursor: ew-resize;
-  }
+.specRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: $headerFont;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba($white, 0.94);
 
-  &::-moz-range-thumb {
-    width: 44px;
-    height: 100%;
-    border: none;
-    background: transparent;
-    cursor: ew-resize;
-  }
-
-  &:focus-visible {
-    opacity: 0.08;
-    background: rgba($orange, 0.15);
-    outline: 2px solid $orange;
-    outline-offset: -2px;
+  svg {
+    color: $lightorange;
+    flex-shrink: 0;
   }
 }
 
@@ -350,7 +322,7 @@
     background-size: 16px 16px !important;
     opacity: 0.95 !important;
     pointer-events: none !important;
-    z-index: 0 !important;
+    z-index: 2 !important;
   }
 
   &::after {
@@ -359,7 +331,7 @@
     inset: 0 !important;
     background-image: radial-gradient(ellipse 50% 40% at 20% 19%, rgba($orange, 0.048), transparent 70%), radial-gradient(ellipse 40% 50% at 88% 89%, rgba($white, 0.03), transparent 65%) !important;
     pointer-events: none !important;
-    z-index: 0 !important;
+    z-index: 2 !important;
   }
 }
 /* end hero pattern */
@@ -399,9 +371,10 @@
 }
 
 /* === TABLET + MOBILE HERO VISUAL DEFER (fleet QA) === */
-/* Hide side dials/meters on tablet & phone so the hero fold stays clean */
+/* Hide side dials/meters on tablet & phone so the hero fold stays clean.
+   .visual is intentionally excluded — it now carries the authentic photo
+   card, which must stay visible on mobile per the parallax-photo pattern. */
 @media (max-width: 960px) {
-  .visual,
   .heroVisual,
   .meterWrap,
   .rightCol,

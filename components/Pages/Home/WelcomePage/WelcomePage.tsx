@@ -1,134 +1,29 @@
-// _archetype-library/hero-b-before-after/Component.tsx
+// components/Pages/Home/WelcomePage/WelcomePage.tsx
 //
-// Hero B: Before / After — left copy, right full drag-to-reveal image comparison.
-// Interactive range slider + pointer drag. Accessible via role="slider" + range input.
+// PureSoft Carpet Care Hero — teal/obsidian identity.
+// Photographic parallax stage + an authentic technician photo card replaces the
+// prior drag-to-reveal before/after slider. Real IICRC-crew imagery, teal
+// brand scrim, existing copy preserved verbatim.
 'use client';
-import React, { useCallback, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { PhoneIcon, ChevronIcon, CheckIcon } from './_shared/icons';
 import styles from './styles.module.scss';
 
-function BeforeAfterSlider({
-  beforeImageSrc,
-  afterImageSrc,
-  beforeLabel = 'Before',
-  afterLabel = 'After',
-}: {
-  beforeImageSrc: string;
-  afterImageSrc: string;
-  beforeLabel?: string;
-  afterLabel?: string;
-}) {
-  const [position, setPosition] = useState(50);
-  const frameRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
-
-  const setFromClientX = useCallback((clientX: number) => {
-    const el = frameRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    if (rect.width <= 0) return;
-    const pct = ((clientX - rect.left) / rect.width) * 100;
-    setPosition(Math.min(100, Math.max(0, pct)));
-  }, []);
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    dragging.current = true;
-    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
-    setFromClientX(e.clientX);
-  };
-
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return;
-    setFromClientX(e.clientX);
-  };
-
-  const onPointerUp = () => {
-    dragging.current = false;
-  };
-
-  const onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPosition(Number(e.target.value));
-  };
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    const step = e.shiftKey ? 10 : 2;
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      setPosition((p) => Math.max(0, p - step));
-    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      setPosition((p) => Math.min(100, p + step));
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      setPosition(0);
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      setPosition(100);
-    }
-  };
-
-  return (
-    <div className={styles.baFrame} ref={frameRef}>
-      <img
-        src={afterImageSrc}
-        alt={afterLabel}
-        className={styles.baImage}
-        draggable={false}
-      />
-      <div
-        className={styles.baBeforeClip}
-        style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
-      >
-        <img
-          src={beforeImageSrc}
-          alt={beforeLabel}
-          className={styles.baImage}
-          draggable={false}
-        />
-      </div>
-
-      <span className={`${styles.baLabel} ${styles.baLabelBefore}`}>{beforeLabel}</span>
-      <span className={`${styles.baLabel} ${styles.baLabelAfter}`}>{afterLabel}</span>
-
-      <div
-        className={styles.baDivider}
-        style={{ left: `${position}%` }}
-        aria-hidden="true"
-      >
-        <div className={styles.baHandle}>
-          <span className={styles.baHandleArrow} data-dir="left" />
-          <span className={styles.baHandleArrow} data-dir="right" />
-        </div>
-      </div>
-
-      {/* Accessible control — full-area range for pointer + keyboard */}
-      <input
-        type="range"
-        className={styles.baRange}
-        min={0}
-        max={100}
-        step={0.5}
-        value={position}
-        onChange={onRangeChange}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        onKeyDown={onKeyDown}
-        aria-label="Before and after reveal"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(position)}
-        aria-valuetext={`${Math.round(position)} percent before image`}
-        role="slider"
-      />
-    </div>
-  );
-}
-
 export default function WelcomePage() {
+  const reduceMotion = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
+
+  // Scroll-linked parallax on the background photo. Disabled under reduced-motion.
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', reduceMotion ? '0%' : '14%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.06, reduceMotion ? 1.06 : 1.14]);
+
 const badgeText = 'Waco\'s Most Trusted Carpet Care — Since 2011';
 const headlineLines = [
   'Soft Carpets.',
@@ -168,10 +63,6 @@ const meterTopLabel = "After";
 const meterMidLabel = "During";
 const meterBotLabel = "Before";
 const particleColor = '#14b8a6';
-const beforeImageSrc = '/pages/home/welcome/before.jpg';
-const afterImageSrc = '/pages/home/welcome/after.jpg';
-const beforeLabel = "Stained & dull";
-const afterLabel = "Fresh & bright";
 const mapCenterLabel = 'Service HQ';
 const mapPins = [
   { label: 'Waco', x: 42, y: 48 },
@@ -208,7 +99,24 @@ const textureAlt = 'Texture';
 const accentWord = "PureSoft";
 
   return (
-    <section className={styles.hero} aria-label="Hero">
+    <section ref={heroRef} className={styles.hero} aria-label="Hero">
+      {/* Photographic parallax background — real IICRC crew on a Waco-area job */}
+      <motion.div
+        className={styles.bgLayer}
+        style={{ y: bgY, scale: bgScale }}
+        aria-hidden="true"
+      >
+        <Image
+          src="/pages/home/welcome/hero-parallax-bg.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={styles.bgImage}
+        />
+      </motion.div>
+      {/* Teal brand scrim keeps the headline legible over the photo */}
+      <div className={styles.scrim} aria-hidden="true" />
       <div className={styles.shard} aria-hidden="true" />
 
       <div className={styles.layout}>
@@ -272,18 +180,38 @@ const accentWord = "PureSoft";
           </motion.div>
         </div>
 
+        {/* Authentic technician photo — the ownable image, framed as a spec card */}
         <motion.div
           className={styles.visual}
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.28, ease: 'easeOut' }}
         >
-          <BeforeAfterSlider
-            beforeImageSrc={beforeImageSrc}
-            afterImageSrc={afterImageSrc}
-            beforeLabel={beforeLabel}
-            afterLabel={afterLabel}
-          />
+          <div className={styles.photoCard}>
+            <Image
+              src="/pages/home/welcome/hero-photo-card.jpg"
+              alt="PureSoft Carpet Care technician running a professional extraction vacuum across a tile floor in a Waco-area home"
+              fill
+              priority
+              sizes="(max-width: 960px) 88vw, 460px"
+              className={styles.photo}
+            />
+            <div className={styles.photoGlaze} aria-hidden="true" />
+
+            <div className={styles.photoBadge}>
+              <span className={styles.photoBadgeDot} />
+              IICRC-Certified Techs · On-Site
+            </div>
+
+            <div className={styles.specCard}>
+              <span className={styles.specRow}>
+                <CheckIcon size={10} /> Same-Day Service
+              </span>
+              <span className={styles.specRow}>
+                <CheckIcon size={10} /> Spot-Free Guarantee
+              </span>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
